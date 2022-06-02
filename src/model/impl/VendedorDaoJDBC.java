@@ -52,17 +52,9 @@ public class VendedorDaoJDBC implements VendedorDao{
 			
 			//Verifica se tem um vendedor pelo id, senao retorna nulo 
 			if(rs.next()) {
-				Departamento dep = new Departamento();
-				dep.setId(rs.getInt("DepartmentId"));//Nome da coluna no bd
-				dep.setNome(rs.getString("DepName"));//Nome da coluna no bd
+				Departamento dep = instanciandoDepartamento(rs);
 				
-				Vendedor ven = new Vendedor();
-				ven.setId(rs.getInt("Id"));//Nome da coluna no bd
-				ven.setNome(rs.getString("Name"));
-				ven.setEmail(rs.getString("Email"));
-				ven.setAniversario(rs.getDate("BirthDate"));
-				ven.setBaseSalario(rs.getDouble("BaseSalary"));
-				ven.setDepartament(dep);//Referenciando o Departmamento
+				Vendedor ven = instanciandoDepartamento(rs,dep);
 				return ven;
 			}
 			return null;
@@ -75,6 +67,24 @@ public class VendedorDaoJDBC implements VendedorDao{
 			DB.fechaStatement(st);
 			DB.fechaResultSet(rs);
 		}
+	}
+
+	private Vendedor instanciandoDepartamento(ResultSet rs, Departamento dep) throws SQLException {
+		Vendedor ven = new Vendedor();
+		ven.setId(rs.getInt("Id"));//Nome da coluna no bd
+		ven.setNome(rs.getString("Name"));
+		ven.setEmail(rs.getString("Email"));
+		ven.setAniversario(rs.getDate("BirthDate"));
+		ven.setBaseSalario(rs.getDouble("BaseSalary"));
+		ven.setDepartament(dep);//Referenciando o Departmamento
+		return ven;
+	}
+
+	private Departamento instanciandoDepartamento(ResultSet rs) throws SQLException {
+		Departamento dep = new Departamento();
+		dep.setId(rs.getInt("DepartmentId"));//Nome da coluna no bd
+		dep.setNome(rs.getString("DepName"));//Nome da coluna no bd
+		return dep;
 	}
 
 	@Override
