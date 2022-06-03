@@ -42,10 +42,16 @@ public class Programa {
 			System.out.println(ven);
 		}
 		
-		System.out.println("\n##Teste 3: Vendedor Insert##");
+		System.out.println("\n##Teste 4: Vendedor Insert##");
 		Vendedor novoVendedor = new Vendedor(null,"Greg","greg@gmail.com",new Date(),4000.0,departamento);
 		vendedorDao.insert(novoVendedor);
 		
 		System.out.println("Inserido! Novo id: " +novoVendedor.getId());//Para verificar se trouxe o id
+	
+		System.out.println("\n##Teste 5: Vendedor Update##");
+		vendedor = vendedorDao.findById(1);//Carrego os dados do vendedor com id = 1 no objeto vendedor
+		vendedor.setNome("Martha Wayne");
+		vendedorDao.update(vendedor);
+		System.out.println("Atualização completa");
 	}
 }
