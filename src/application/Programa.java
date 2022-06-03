@@ -1,8 +1,7 @@
 package application;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import model.dao.DaoFabrica;
 import model.dao.VendedorDao;
 import model.entities.Departamento;
@@ -42,5 +41,11 @@ public class Programa {
 		for (Vendedor ven : list1) {
 			System.out.println(ven);
 		}
+		
+		System.out.println("\n##Teste 3: Vendedor Insert##");
+		Vendedor novoVendedor = new Vendedor(null,"Greg","greg@gmail.com",new Date(),4000.0,departamento);
+		vendedorDao.insert(novoVendedor);
+		
+		System.out.println("Inserido! Novo id: " +novoVendedor.getId());//Para verificar se trouxe o id
 	}
 }

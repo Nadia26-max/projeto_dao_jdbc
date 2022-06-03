@@ -100,6 +100,6 @@ public class Vendedor implements Serializable{
 	public String toString() {
 		return "Vendedor: Id = " + id + " - Nome=" + nome + " - Email = " + email 
 				+ " - Aniversario = " + aniversario + " - BaseSalario = " + baseSalario 
-				+ " - Departament = " + departament;
+				+ " - Departamento = " + departament;
 	}
 }

@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import db.DB;
 import db.DbExcecao;
 import model.dao.VendedorDao;
@@ -25,8 +25,41 @@ public class VendedorDaoJDBC implements VendedorDao{
 	}
 
 	@Override
-	public void insert(Vendedor obj) {
+	public void insert(Vendedor ven) {
+		PreparedStatement st = null;
 		
+		try {
+			st = con.prepareStatement(
+					"INSERT INTO vendedor (Name, Email, BirthDate, BaseSalary, DepartmentId)"
+				  + "VALUES (?, ?, ?, ?, ?)",
+				   Statement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, ven.getNome());
+			st.setString(2, ven.getEmail());
+			st.setDate(3, new java.sql.Date(ven.getAniversario().getTime()));
+			st.setDouble(4, ven.getBaseSalario());
+			st.setInt(5, ven.getDepartament().getId());
+			
+			int linhasAfetadas = st.executeUpdate();
+			
+			if(linhasAfetadas > 0) {//Se Inserir
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) { //Se Inserir - 1 dado
+					int id = rs.getInt(1);//Primeira posição das chaves
+					
+					ven.setId(id);//ven ja recebe o valor da variavel id
+				}
+				
+				DB.fechaResultSet(rs);
+			}
+			else {//Caso nenhuma linha seja alterada
+				throw new DbExcecao("Erro inesperado!Nenhuma linha afetada");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbExcecao(e.getMessage());
+		}
+		DB.fechaStatement(st);
 	}
 
 	@Override
