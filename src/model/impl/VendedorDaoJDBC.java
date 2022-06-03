@@ -92,8 +92,53 @@ public class VendedorDaoJDBC implements VendedorDao{
 	}
 
 	@Override
-	public List<Vendedor> findAll() {
-		return null;
+	public List<Vendedor> findAll() {//Vai buscar todos os vendedores, ordenar mas nao tem restrição (where)
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = con.prepareStatement(
+					"SELECT vendedor.*,departmento.Name as DepName "
+					+ "FROM vendedor "
+					+ "INNER JOIN departmento ON vendedor.DepartmentId = departmento.Id "
+					+ "ORDER BY Name"
+					);
+
+			rs = st.executeQuery();
+			
+			List<Vendedor> lista = new ArrayList<Vendedor>();
+			
+			//Para nao repetir o Departamento no while (os vendedores que apontam para o departamento e nao o contrario - dois para um)
+			Map<Integer, Departamento> mapa = new HashMap<>();
+			//Criei um mapa vazio e posso guardar qualquer departamento que eu instanciar
+
+			//Portanto, cada vez que passar no while, verifico se ja existe aquele Departamento
+			while(rs.next()) {
+				//Busco dentro do mapa se ja existe alguma id 2, por exemplo. 
+				Departamento dep = mapa.get(rs.getInt("DepartmentId"));
+				
+				//Se nao existir, retorna nulo e instancia o departamento
+				if(dep == null) {
+					dep = instanciandoDepartamento(rs);
+					
+					//Guardando o Departamento no map - chave, departamento que vou salvar
+					mapa.put(rs.getInt("DepartmentId"),dep);
+				}			
+				//Apontando para o departamento existente ou o novo que instanciei
+				Vendedor ven = instanciandoDepartamento(rs,dep);
+				lista.add(ven);
+			}
+			return lista;
+		}
+		catch (SQLException e) {
+			throw new DbExcecao(e.getMessage());
+		}
+		
+		finally {
+			DB.fechaStatement(st);
+			DB.fechaResultSet(rs);
+		}
 	}
 
 	@Override

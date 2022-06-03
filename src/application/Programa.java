@@ -21,22 +21,26 @@ public class Programa {
 		System.out.println("\n##Teste 2: Vendedor findByDepartamento##");
 
 		Departamento departamento = new Departamento(2, null);
-		
+
 		List<Vendedor> list1 = vendedorDao.findByDepartamento(departamento);
 
-		//if (list1 != null) {
+		// if (list1 != null) {
 
-			for (Vendedor ven : list1) {
-				
-				System.out.println(ven);
-				/*
-				System.out.println(ven.getId() 
-						+ ven.getNome() + " - " 
-						+ ven.getEmail() + " - " 
-						+ ven.getAniversario() + " - "
-						+ ven.getBaseSalario() + " - "
-						+ ven.getDepartament());*/
-			}
-	   //}
+		for (Vendedor ven : list1) {
+
+			System.out.println(ven);
+			/*
+			 * System.out.println(ven.getId() + ven.getNome() + " - " + ven.getEmail() +
+			 * " - " + ven.getAniversario() + " - " + ven.getBaseSalario() + " - " +
+			 * ven.getDepartament());
+			 */
+		}
+
+		System.out.println("\n##Teste 3: Vendedor findAll##");
+		list1 = vendedorDao.findAll();//Usando a mesma lista nao precisa ter a declaração da lista antes
+		
+		for (Vendedor ven : list1) {
+			System.out.println(ven);
+		}
 	}
 }
