@@ -68,5 +68,7 @@ public class Programa {
 		System.out.println("Exclusão completa");
 		
 		sc.close();
+	/*----------------------------------------------------------------------------*/
+
 	}
 }
